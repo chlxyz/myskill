@@ -1,10 +1,10 @@
 "use client";
 import React, { useState } from 'react';
-import NavBar from './components/navbar';
+import NavBar from '../components/navbar';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 
-const Main = () => {
+const Main = () => { 
   const [hoveredButton, setHoveredButton] = useState(null);
   const { data: session, status } = useSession();
 
@@ -19,11 +19,10 @@ const Main = () => {
     <div
       className='flex flex-col min-h-screen bg-gray-100 p-12'
       style={{
-        backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), url("/images/aleins1.jpg")',
+        backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("/images/e_learning_course.png")',
         backgroundSize: 'cover',
       }}
     >
-      <NavBar />
       <div className="flex flex-1 flex-row items-center justify-center gap-8 relative">
         <div
           className={`absolute left-0 transform transition-opacity duration-300 ease-in-out ${
@@ -41,7 +40,7 @@ const Main = () => {
             onMouseLeave={() => setHoveredButton(null)}
             className="bg-gray-900 text-white text-xl py-6 px-8 rounded-full shadow-lg hover:bg-blue-700 transform hover:scale-105 transition-all duration-300 ease-in-out z-10"
           >
-            Join Exam
+            Join Quiz
           </button>
         </Link>
         <Link href="/createquiz" passHref>
@@ -50,7 +49,7 @@ const Main = () => {
             onMouseLeave={() => setHoveredButton(null)}
             className="bg-gray-900 text-white text-xl py-6 px-8 rounded-full shadow-lg hover:bg-orange-600 transform hover:scale-105 transition-all duration-300 ease-in-out z-10"
           >
-            Create Exam
+            Create Quiz
           </button>
         </Link>
         <div
