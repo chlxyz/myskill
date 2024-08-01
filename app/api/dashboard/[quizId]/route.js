@@ -127,7 +127,6 @@ export async function GET(req) {
       return acc;
     }, {});
 
-    // Calculate score distribution
     const scores = quiz.results.map((result) => {
       let totalScore = 0;
       result.answers.forEach((answer) => {
