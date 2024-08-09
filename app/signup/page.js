@@ -38,12 +38,17 @@ const Register = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-[#D9D9D9]">
+    <div className="flex px-24 items-center h-screen bg-[#D9D9D9]"
+    style={{
+      backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), url("/images/robio4.png")',
+      backgroundSize: 'cover',
+    }}
+    >
       <div className="p-8 rounded-lg w-[35%]">
-        <h1 className="text-5xl font-bold mb-6 text-black">Start now by creating your first account!</h1>
-        <form onSubmit={handleSubmit} className="max-w mx-auto">
+        <h1 className="text-5xl font-bold mb-6 text-white register-title">Registering</h1>
+        <form onSubmit={handleSubmit} className="max-w mx-auto register-form">
             <div className="mb-4 flex flex-col">
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                <label htmlFor="email" className="block text-sm font-medium text-white mb-1">Email</label>
                 <input
                     type="email"
                     id="email"
@@ -54,7 +59,7 @@ const Register = () => {
                 />
             </div>
             <div className="mb-4 flex flex-col">
-                <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-1">Username</label>
+                <label htmlFor="username" className="block text-sm font-medium text-white mb-1">Username</label>
                 <input
                     type="text"
                     id="username"
@@ -65,7 +70,7 @@ const Register = () => {
                 />
             </div>
             <div className="mb-4 flex flex-col">
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                <label htmlFor="password" className="block text-sm font-medium text-white mb-1">Password</label>
                 <input
                     type="password"
                     id="password"
@@ -78,15 +83,15 @@ const Register = () => {
             {error && <p className="text-red-500 mb-4">{error}</p>}
             <button
                 type="submit"
-                className="w-full bg-[#0500FF] text-white p-2 rounded-3xl"
+                className="w-full bg-red-500 hover:bg-gray-500 text-white p-2 rounded-3xl"
             >
                 Register
             </button>
         </form>
 
 
-        <div className='whitespace-nowrap text-black mt-10 flex justify-center text-center'>
-          <p>Already have an account?<Link href="/signin"><span className='text-[#0500FF] hover:text-blue-800'> sign in now</span></Link></p>
+        <div className='whitespace-nowrap mt-10 flex justify-center text-center donthave'>
+          <p className='text-white'>Already have an account?<Link href="/signin"><span className='text-gray-500 hover:text-red-500'> sign in now</span></Link></p>
         </div>
       </div>
     </div>

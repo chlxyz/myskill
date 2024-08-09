@@ -44,11 +44,16 @@ export default function SignIn() {
   }
   
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#D9D9D9] py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen flex items-center justify-end py-12 px-72"
+    style={{
+      backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), url("/images/robio3.png")',
+      backgroundSize: 'cover',
+    }}
+    >
       <div className="max-w-md w-full space-y-8">
         <div>
-          <h2 className="mt-6 text-5xl text-start font-extrabold text-gray-900">
-            Sign in to your account
+          <h2 className="mt-6 text-start text-white">
+            <h1 className="signin text-6xl text-start text-white">Sign in</h1>
           </h2>
         </div>
         {error && (
@@ -58,7 +63,7 @@ export default function SignIn() {
         )}
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <input type="hidden" name="remember" defaultValue="true" />
-          <div className="rounded-md shadow-sm -space-y-px bg-[#C2C0FF]">
+          <div className="rounded-md shadow-sm -space-y-px bg-[#C2C0FF] signin-form">
             <div>
               <label htmlFor="username" className="sr-only">
                 Username
@@ -96,14 +101,14 @@ export default function SignIn() {
           <div>
             <button
               type="submit"
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className="signin-button group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-gray-500 hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
               Sign In
             </button>
           </div>
 
-          <div className='whitespace-nowrap text-black mt-10 flex justify-center text-center'>
-            <p>Don't have an account?<Link href="/signup"><span className='text-[#0500FF] hover:text-blue-800'> register</span></Link></p>
+          <div className='whitespace-nowrap mt-10 flex justify-center text-center donthave'>
+            <p className="text-white">Don't have an account?<Link href="/signup"><span className='text-red-500 hover:text-red-800'> register</span></Link></p>
           </div>
 
         </form>

@@ -47,44 +47,44 @@ const QuizHistory = () => {
   return (
     <div className='flex flex-col min-h-screen bg-gray-200 p-12' 
     style={{
-      backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), url("/images/aleins5.jpg")',
+      backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), url("/images/robio5.png")',
       backgroundSize: 'cover',
     }}
     >
       <Navbar />
       <div className="mt-[2%]">
-        <div className="flex space-x-4 mb-6 justify-center">
+        <div className="flex space-x-4 mb-6 justify-center hisjocre">
           <button
             onClick={() => setView('joined')}
-            className={`px-4 py-2 rounded-2xl ${view === 'joined' ? 'bg-orange-500 text-white' : 'bg-gray-200'}`}
+            className={`px-4 py-2 rounded-2xl ${view === 'joined' ? ' text-white' : 'bg-white'}`}
           >
             Joined Exams
           </button>
           <button
             onClick={() => setView('created')}
-            className={`px-4 py-2 rounded-2xl ${view === 'created' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+            className={`px-4 py-2 rounded-2xl ${view === 'created' ? ' text-white' : 'bg-white'}`}
           >
             Created Exams
           </button>
         </div>
-        <div className="flex flex-col items-start space-y-4">
+        <div className="flex flex-col items-start space-y-4 history-list">
           {quizzes.map((quiz) => (
             <div
               key={quiz.id}
               className="border p-4 rounded-lg shadow-sm w-full transform transition duration-200 hover:scale-[102%] hover:shadow-lg"
-              style={{ backgroundColor: 'rgba(255,255,255,0.8)', backdropFilter: 'blur(5px)' }}
+              style={{ backgroundColor: 'rgba(255,0,0,0)', backdropFilter: 'blur(10px)' }}
             >
               <div className="mb-2">
                 {view === 'joined' ? (
                   quiz?.quiz ? (
                     <>
-                      <p className="text-lg font-semibold"><span className='font-bold'>Title:</span> {quiz.quiz.title}</p>
-                      <p className="text-sm text-gray-600"><span className='font-bold'>Description:</span> {quiz.quiz.description}</p>
-                      <p className="text-sm text-gray-600"><span className='font-bold'>Score:</span> {quiz.score}</p>
-                      <p className="text-sm text-gray-600"><span className='font-bold'>Quiz ID:</span> {quiz.quiz.id}</p>
+                      <p className="text-lg font-semibold text-white"><span className='font-bold'>Title:</span> {quiz.quiz.title}</p>
+                      <p className="text-sm text-white"><span className='font-bold'>Description:</span> {quiz.quiz.description}</p>
+                      <p className="text-sm text-white"><span className='font-bold'>Score:</span> {quiz.score}</p>
+                      <p className="text-sm text-white"><span className='font-bold'>Quiz ID:</span> {quiz.quiz.id}</p>
                       <div className="flex space-x-4">
                         <Link href={`/participantdashboard?quizId=${quiz.quiz.id}`}>
-                          <h1 className="text-blue-500 hover:underline">Review Exam</h1>
+                          <h1 className="text-gray-300 hover:underline">Review Exam</h1>
                         </Link>
                       </div>
                     </>
@@ -93,24 +93,24 @@ const QuizHistory = () => {
                   )
                 ) : (
                   <>
-                    <p className="text-lg font-semibold"><span className='font-bold'>Title:</span> {quiz.title}</p>
-                    <p className="text-sm text-gray-600"><span className='font-bold'>Description:</span> {quiz.description}</p>
-                    <p className="text-sm text-gray-600"><span className='font-bold'>Duration:</span> {quiz.duration} minutes</p>
-                    <p className="text-sm text-gray-600"><span className='font-bold'>Quiz ID:</span> {quiz.id}</p>
+                    <p className="text-lg font-semibold text-white"><span className='font-bold'>Title:</span> {quiz.title}</p>
+                    <p className="text-sm text-white"><span className='font-bold'>Description:</span> {quiz.description}</p>
+                    <p className="text-sm text-white"><span className='font-bold'>Duration:</span> {quiz.duration} minutes</p>
+                    <p className="text-sm text-white"><span className='font-bold'>Quiz ID:</span> {quiz.id}</p>
                     <div className="flex space-x-4 text-center justify-end">
                       <Link href={`/createquiz?quizId=${quiz.id}`}>
-                      <button className="px-4 py-2 text-white bg-orange-400 rounded-2xl hover:bg-black hover:text-white">
+                      <button className="px-4 py-2 text-white hover:text-white">
                           Edit Exam
                         </button>
                       </Link>
                       <Link href={`/dashboard?quizId=${quiz.id}`}>
-                        <button className="px-4 py-2 text-white bg-slate-400 rounded-2xl hover:bg-black hover:text-white">
+                        <button className="px-4 py-2 text-white rounded-2xl">
                           Exam Dashboard
                         </button>
                       </Link>
                       <button
                         onClick={() => handleDelete(quiz.id)}
-                        className="px-4 py-2 text-white bg-red-600 rounded-2xl hover:bg-black hover:text-white"
+                        className="px-4 py-2 text-white rounded-2xl"
                       >
                         Delete Exam
                       </button>

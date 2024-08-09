@@ -1,154 +1,10 @@
-// "use client"
-// import { useEffect, useState, useRef } from 'react';
-// import { usePathname } from 'next/navigation';
-
-// export default function QuizPage() {
-//     const pathname = usePathname();
-//     const [, quizId] = pathname.split('/quizpage/'); // Extract quizId from pathname
-
-//     const [quiz, setQuiz] = useState(null);
-//     const [error, setError] = useState(null);
-//     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-//     const [answers, setAnswers] = useState([]);
-//     const [timer, setTimer] = useState(0);
-//     const timerRef = useRef(null);
-
-//     // Function to start or restart timer
-//     const startTimer = () => {
-//         if (timerRef.current) {
-//             clearInterval(timerRef.current);
-//         }
-//         timerRef.current = setInterval(() => {
-//             setTimer(prevTimer => prevTimer + 1);
-//         }, 1000);
-//     };
-
-//     // Function to stop timer
-//     const stopTimer = () => {
-//         if (timerRef.current) {
-//             clearInterval(timerRef.current);
-//         }
-//     };
-
-//     useEffect(() => {
-//         // Fetch quiz data based on quizId
-//         if (quizId) {
-//             fetch(`/api/get-quiz/${quizId}`)
-//                 .then(response => {
-//                     if (!response.ok) {
-//                         throw new Error('Failed to fetch quiz');
-//                     }
-//                     return response.json();
-//                 })
-//                 .then(data => {
-//                     setQuiz(data);
-//                     setAnswers(new Array(data.questions.length).fill(null)); // Initialize answers array
-//                 })
-//                 .catch(error => {
-//                     setError(error.message);
-//                 });
-//         }
-//     }, [quizId]);
-
-//     const handleAnswerSelect = (questionIndex, choiceIndex) => {
-//         const newAnswers = [...answers];
-//         newAnswers[questionIndex] = {
-//             choiceIndex,
-//             timeSpent: timer,
-//         };
-//         setAnswers(newAnswers);
-//         stopTimer();
-//     };
-
-//     const handleSubmitQuiz = () => {
-//         // Handle submitting quiz answers
-//         console.log('Submitted Answers:', answers);
-//         // You can implement submission logic here, such as sending answers to backend
-//     };
-
-//     const handleNextQuestion = () => {
-//         // Move to the next question
-//         setCurrentQuestionIndex(prevIndex => prevIndex + 1);
-//         setTimer(0); // Reset timer for the new question
-//         startTimer(); // Start timer for the new question
-//     };
-
-//     const handlePreviousQuestion = () => {
-//         // Move to the previous question
-//         setCurrentQuestionIndex(prevIndex => prevIndex - 1);
-//         setTimer(answers[currentQuestionIndex - 1]?.timeSpent || 0); // Set timer based on previous answer time spent
-//         startTimer(); // Start timer for the previous question
-//     };
-
-//     // Render loading state while waiting for quiz data
-//     if (!quiz) {
-//         return <div>Loading...</div>;
-//     }
-
-//     // Render error message if fetch fails
-//     if (error) {
-//         return <div>Error: {error}</div>;
-//     }
-
-//     // Check if quiz has questions
-//     if (!quiz.questions || quiz.questions.length === 0) {
-//         return <div>No questions found for this quiz.</div>;
-//     }
-
-//     // Calculate remaining time for current question
-//     const remainingTime = quiz.questions[currentQuestionIndex]?.duration - timer;
-
-//     // Render quiz details once fetched
-//     return (
-//         <div className="quiz-container">
-//             <h1>{quiz.title}</h1>
-//             <p>{quiz.description}</p>
-//             <p>Duration: {quiz.duration} seconds</p>
-//             <div className="question-container">
-//                 <h2>Question {currentQuestionIndex + 1}</h2>
-//                 <div className="question-text">{quiz.questions[currentQuestionIndex].content}</div>
-//                 <ul className="choices-list">
-//                     {quiz.questions[currentQuestionIndex].choices.map((choice, index) => (
-//                         <li key={index} className="choice-item">
-//                             <button
-//                                 className="choice-button"
-//                                 onClick={() => handleAnswerSelect(currentQuestionIndex, index)}
-//                                 disabled={answers[currentQuestionIndex] !== null}
-//                             >
-//                                 {choice.content}
-//                             </button>
-//                         </li>
-//                     ))}
-//                 </ul>
-//                 <div className="timer">Remaining Time: {remainingTime > 0 ? remainingTime : 0} seconds</div>
-//                 <div className="navigation-buttons">
-//                     {currentQuestionIndex > 0 && (
-//                         <button className="prev-button" onClick={handlePreviousQuestion}>
-//                             Previous
-//                         </button>
-//                     )}
-//                     {currentQuestionIndex < quiz.questions.length - 1 && (
-//                         <button className="next-button" onClick={handleNextQuestion}>
-//                             Next
-//                         </button>
-//                     )}
-//                     {currentQuestionIndex === quiz.questions.length - 1 && (
-//                         <button className="submit-button" onClick={handleSubmitQuiz}>
-//                             Submit Quiz
-//                         </button>
-//                     )}
-//                 </div>
-//             </div>
-//         </div>
-//     );
-// }
-
 "use client";
 import { useEffect, useState, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
+import Link from 'next/link';
 
 export default function QuizPage() {
     const { data: session, status } = useSession();
@@ -186,7 +42,7 @@ export default function QuizPage() {
                 });
         }
     }, [quizId]);
-
+    
     useEffect(() => {
         if (durationTimer > 0) {
             durationTimerRef.current = setInterval(() => {
@@ -201,18 +57,18 @@ export default function QuizPage() {
             }
         };
     }, [durationTimer]);
-
+    
     useEffect(() => {
         startTimer();
         return () => stopTimer();
     }, []);
-
+    
     useEffect(() => {
         setTimer(0);
         startTimer();
         return () => stopTimer();
     }, [currentQuestionIndex]);
-
+    
     const startTimer = () => {
         if (timerRef.current) {
             clearInterval(timerRef.current);
@@ -221,18 +77,18 @@ export default function QuizPage() {
             setTimer(prevTimer => prevTimer + 1);
         }, 1000);
     };
-
+    
     const stopTimer = () => {
         if (timerRef.current) {
             clearInterval(timerRef.current);
         }
     };
-
+    
     const handleAnswerSelect = (questionIndex, choiceIndex) => {
         const newAnswers = [...answers];
         const currentAnswer = newAnswers[questionIndex];
         const timeSpent = newAnswers[questionIndex].timeSpent + timer;
-
+    
         if (currentAnswer.choiceIndex === choiceIndex) {
             newAnswers[questionIndex] = {
                 choiceIndex: null,
@@ -245,11 +101,36 @@ export default function QuizPage() {
                 timeSpent,
             };
         }
-
+    
         setAnswers(newAnswers);
         stopTimer();
     };
-
+    
+    const handleSaveAnswer = () => {
+        const newAnswers = [...answers];
+        newAnswers[currentQuestionIndex] = {
+            ...newAnswers[currentQuestionIndex],
+            timeSpent: newAnswers[currentQuestionIndex].timeSpent + timer,
+        };
+        setAnswers(newAnswers);
+        setTimer(0);
+    };
+    
+    const handleNextQuestion = () => {
+        handleSaveAnswer();
+        setCurrentQuestionIndex(prevIndex => prevIndex + 1);
+    };
+    
+    const handlePreviousQuestion = () => {
+        handleSaveAnswer();
+        setCurrentQuestionIndex(prevIndex => prevIndex - 1);
+    };
+    
+    const handleQuestionNavigation = (index) => {
+        handleSaveAnswer();
+        setCurrentQuestionIndex(index);
+    };
+    
     const handleSubmitQuiz = async () => {
         try {
             const userId = parseInt(session.user.id, 10); // Ensure userId is an integer
@@ -297,37 +178,45 @@ export default function QuizPage() {
         });
         setScore(totalScore);
     };
-
-    const handleNextQuestion = () => {
-        setCurrentQuestionIndex(prevIndex => prevIndex + 1);
-    };
-
-    const handlePreviousQuestion = () => {
-        setCurrentQuestionIndex(prevIndex => prevIndex - 1);
-    };
-
-    const handleQuestionNavigation = (index) => {
-        setCurrentQuestionIndex(index);
-    };
-
+    
     const formatTime = (seconds) => {
         const minutes = Math.floor(seconds / 60);
         const secs = seconds % 60;
         return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
     };
 
+    if (durationTimer <= 0) {
+        return (
+            
+        <div className="relative flex justify-center items-center h-screen bg-black">
+            <div className="absolute top-0 right-0 p-4">
+                <Link href="/">
+                    <h1 className="text-5xl text-white cursor-pointer">X</h1>
+                </Link>
+
+            </div>
+            <div className="text-4xl font-bold text-red-600 animate-pulse">
+                Times Up!
+            </div>
+        </div>
+
+            
+        );
+    }
+    
     const openFinishDialog = () => {
         setShowFinishDialog(true);
     };
-
+    
     const closeFinishDialog = () => {
         setShowFinishDialog(false);
     };
-
+    
     const confirmFinish = () => {
         setShowFinishDialog(false);
         handleSubmitQuiz();
     };
+
 
     if (!quiz) {
         return (
@@ -344,6 +233,8 @@ export default function QuizPage() {
     if (!quiz.questions || quiz.questions.length === 0) {
         return <div className="text-center mt-10 text-lg">No questions found for this quiz.</div>;
     }
+
+
 
     if (showResults) {
         const scorePercentage = (score / quiz.questions.length) * 100;
@@ -393,10 +284,10 @@ export default function QuizPage() {
     }
     
     return (
-        <div className="flex bg-[#D9D9D9] h-screen">
+        <div className="flex bg-black h-screen">
             <div className="w-3/4 p-4">
-                <h1 className="text-3xl font-bold mb-4 text-center">{quiz.title}</h1>
-                <p className="text-gray-600 mb-6 text-center">{quiz.description}</p>
+                <h1 className="text-3xl font-bold mb-4 text-center text-white">{quiz.title}</h1>
+                <p className="text-white mb-6 text-center">{quiz.description}</p>
                 <div className='justify-center flex border-2 bg-gray-500 max-w-[10%] rounded-2xl text-center'>
                     <p className="text-white"> Quiz ID: {quiz.id} </p>
                 </div>
@@ -408,7 +299,7 @@ export default function QuizPage() {
                         Time Spent: {timer}s
                     </div> */}
                 </div>
-                <div className="text-right mb-4">
+                <div className="text-right mb-4 text-white">
                     <span className="font-bold text-xl">{formatTime(durationTimer)}</span>
                 </div>
                 <AnimatePresence mode="wait">
@@ -418,42 +309,81 @@ export default function QuizPage() {
                         animate={{ opacity: 1, x: 0 }}
                         exit={{ opacity: 0, x: -100 }}
                         transition={{ duration: 0.5 }}
-                        className="bg-[#D9D9D9] p-4 rounded-lg shadow-inner mb-6"
+                        className="rounded-lg shadow-inner mb-6"
                     >
-                        <div className="text-xl mb-4">{quiz.questions[currentQuestionIndex].content}</div>
-                        <ul>
-                            {quiz.questions[currentQuestionIndex].choices.map((choice, index) => (
+                        <div className="text-xl mb-4 text-white">{quiz.questions[currentQuestionIndex].content}</div>
+
+
+                        <div className='flex flex-row gap-2 justify-center items-center'>
+
+                        {quiz.questions[currentQuestionIndex].choices.map((choice, index) => {
+                            // Define the placeholder letters (A, B, C, ...)
+                            const placeholder = String.fromCharCode(65 + index); // 'A' + index (0, 1, 2, ...)
+
+                            return (
                                 <motion.li 
                                     key={index} 
-                                    className="mb-2"
-                                    whileTap={{ scale: 1.1 }}
+                                    className="mb-2 flex justify-center items-center"
+                                    whileTap={{ scale: 0.5 }}
                                 >
                                     <button
-                                        className={`w-full text-left p-2 rounded-3xl border ${
+                                        className={`relative flex items-center justify-center w-52 h-52 rounded-full border m-2 ${
                                             answers[currentQuestionIndex]?.choiceIndex === index
-                                                ? 'bg-[#0500FF] text-white'
+                                                ? 'bg-red-500 text-white'
                                                 : 'bg-white'
                                         }`}
                                         onClick={() => handleAnswerSelect(currentQuestionIndex, index)}
                                     >
-                                        {choice.content}
+                                        <span
+                                            className={`absolute flex items-center justify-center w-16 h-16 rounded-full ${
+                                                answers[currentQuestionIndex]?.choiceIndex === index
+                                                    ? ' text-black opacity-0'
+                                                    : 'bg-white text-black'
+                                            }`}
+                                        >
+                                            {placeholder}
+                                        </span>
+                                        <span
+                                            className={`transition-all duration-300 text-center ${
+                                                answers[currentQuestionIndex]?.choiceIndex === index
+                                                    ? 'opacity-100'
+                                                    : 'opacity-0'
+                                            }`}
+                                        >
+                                            {choice.content}
+                                        </span>
                                     </button>
                                 </motion.li>
-                            ))}
-                        </ul>
+                            );
+                        })}
+
+
+                        </div>
+
+                        <div className='flex justify-end items-end p-0'>
+                            <button
+                                className="px-4 py-2 bg-gray-500 text-white rounded-2xl mt-4"
+                                onClick={handleSaveAnswer}
+                            >
+                                Save Answer
+                            </button>
+                        </div>
+
                     </motion.div>
                 </AnimatePresence>
                 <div className="flex justify-between">
-                    <button
-                        className="px-4 py-2 bg-[#0500FF] text-white rounded-2xl"
-                        onClick={handlePreviousQuestion}
-                        disabled={currentQuestionIndex === 0}
-                    >
-                        Previous
-                    </button>
+                    {currentQuestionIndex > 0 && (
+                        <button
+                            className="px-4 py-2 bg-red-500 text-white rounded-2xl"
+                            onClick={handlePreviousQuestion}
+                        >
+                            Previous
+                        </button>
+                    )}
+
                     {currentQuestionIndex < quiz.questions.length - 1 ? (
                         <button
-                            className="px-4 py-2 bg-[#0500FF] text-white rounded-2xl"
+                            className="px-4 py-2 bg-white text-black rounded-2xl"
                             onClick={handleNextQuestion}
                         >
                             Next
@@ -466,18 +396,21 @@ export default function QuizPage() {
                             Finish
                         </button>
                     )}
+
                 </div>
             </div>
-            <div className="w-1/4 p-4 bg-[#7F7F7F]">
-                <h2 className="text-lg font-semibold mb-4">Question Navigation</h2>
+            <div className="w-1/4 p-4"
+            style={{ backgroundColor: 'rgba(255,0,0,0)', backdropFilter: 'blur(10px)' }}
+            >
+                <h2 className="text-lg font-semibold mb-4 text-white">Question Navigation</h2>
                 <ul className="space-y-2">
                     {quiz.questions.map((_, index) => (
                         <li key={index}>
                             <button
                                 className={`w-full text-left p-2 rounded-lg ${
                                     index === currentQuestionIndex
-                                        ? 'bg-[#0500FF] text-white'
-                                        : 'bg-white'
+                                        ? 'bg-red-500 text-white'
+                                        : 'bg-gray-500'
                                 }`}
                                 onClick={() => handleQuestionNavigation(index)}
                             >

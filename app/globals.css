@@ -3,6 +3,25 @@
   src: url('/font/PPPangramSansRounded-Medium.otf') format('opentype');
 }
 
+@font-face {
+  font-family: 'NM-UB';
+  src: url('/font/NeueMachina-Ultrabold.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'NM-L';
+  src: url('/font/NeueMachina-Light.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'NM-R';
+  src: url('/font/NeueMachina-Regular.otf') format('opentype');
+}
+
+
+
+
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -14,8 +33,62 @@
 }
 
 .main-font {
-  font-family: 'Unique';
+  font-family: 'NM-R';
 }
+
+.myskill-title {
+  font-family: 'NM-UB';
+}
+
+.register-title {
+  font-family: 'NM-UB';
+}
+
+.myskill-desc{
+  font-family: 'NM-L';
+}
+
+.join{
+  font-family: 'NM-R';
+}
+
+.create{
+  font-family: 'NM-R';
+}
+
+.navbar{
+  font-family: 'NM-R';
+}
+
+.signin-form{
+  font-family: 'NM-R';
+}
+
+.register-form{
+  font-family: 'NM-R';
+}
+
+.signin-button{
+  font-family: 'NM-R';
+}
+
+.donthave{
+  font-family: 'NM-R';
+}
+
+.history-list{
+  font-family: 'NM-R';
+}
+
+.hisjocre{
+  font-family: 'NM-R';
+}
+
+
+.signin{
+  font-family: 'NM-UB';
+}
+
 
 /* .score-bar {
   width: 100%;

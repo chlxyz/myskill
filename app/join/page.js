@@ -59,19 +59,19 @@ const Join = () => {
 
   return (
     <div className="flex flex-col bg-gray-200 p-12 items-center overflow-hidden"  style={{
-      backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), url("/images/aleins2.jpg")',
+      backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), url("/images/robio7.png")',
       backgroundSize: 'cover',
       overflows: 'hidden',
     }}>
       <NavBar />
       <div className="p-[10%] rounded-2xl w-[50%] mt-7 overflow-hidden">
-        <h2 className="text-xl font-semibold mb-4 text-gray-800 text-start">Exam ID</h2>
+        <h2 className="text-xl font-semibold mb-4 text-white text-start">Exam ID</h2>
         <form onSubmit={handleSearch} className="space-y-4">
           <div>
             <input
               type="text"
               id="quizId"
-              className="shadow appearance-none border rounded-xl w-full py-2 px-3 text-gray-700 bg-[#C2C0FF] leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded-xl w-full py-2 px-3 text-white bg-black leading-tight focus:outline-none focus:shadow-outline"
               value={quizId}
               onChange={(e) => setQuizId(e.target.value)}
               placeholder="Input exam id"
@@ -80,29 +80,31 @@ const Join = () => {
           <div>
             <button
               type="submit"
-              className="w-full text-black bg-green-300 hover:bg-white hover:text-black font-bold py-2 px-4 rounded-2xl focus:outline-none focus:shadow-outline"
+              className="w-full text-white bg-black hover:bg-white hover:text-black font-bold py-2 px-4 rounded-2xl focus:outline-none focus:shadow-outline"
             >
               Search
             </button>
           </div>
         </form>
-        <div className="bg-[#C2C0FF] p-[20%] w-[100%] mt-4 rounded-xl">
+        <div className="p-[20%] w-[100%] mt-4 rounded-xl"
+        style={{ backgroundColor: 'rgba(255,0,0,0)', backdropFilter: 'blur(10px)' }}
+        >
           {quizData ? (
             <div className="text-center">
-              <p className="text-gray-700">Available exam with input id:</p>
-              <p className="text-gray-800 font-semibold">{quizData.title}</p>
+              <p className="text-white">Available exam with input id:</p>
+              <p className="text-white font-semibold">{quizData.title}</p>
               <button
                 onClick={handleJoinQuiz}
-                className="mt-4 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                className="mt-4 hover:bg-red-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               >
                 Join Quiz
               </button>
             </div>
           ) : (
-            <p className="text-gray-700 text-center">Available exam with input id will appear here</p>
+            <p className="text-white text-center">Available exam with input id will appear here</p>
           )}
           {errorMessage && (
-            <p className="text-red-500 text-center mt-4">{errorMessage}</p>
+            <p className="text-red-200 text-center mt-4">{errorMessage}</p>
           )}
         </div>
       </div>

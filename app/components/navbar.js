@@ -8,8 +8,8 @@ import { faHome, faCog, faSignInAlt, faUserPlus, faSignOutAlt, faUser } from "@f
 export default function NavBar() {
   const { data: session } = useSession();
   return (
-    <div className="flex justify-center">
-      <ul className="flex gap-8 bg-gray-900 text-white rounded-full shadow-lg p-4 items-center">
+    <div className="flex justify-center navbar">
+      <ul className="flex gap-8 bg-opacity-80 text-white rounded-full shadow-lg p-4 items-center">
         <Link href="/" passHref>
           <li className="flex items-center gap-2 p-2 hover:bg-gray-700 rounded-full cursor-pointer transition-all">
             <FontAwesomeIcon icon={faHome} />
