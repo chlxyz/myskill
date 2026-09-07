@@ -1,110 +1,100 @@
-@font-face {
-  font-family: 'Unique';
-  src: url('/font/PPPangramSansRounded-Medium.otf') format('opentype');
-}
-
-@font-face {
-  font-family: 'NM-UB';
-  src: url('/font/NeueMachina-Ultrabold.otf') format('opentype');
-}
-
-@font-face {
-  font-family: 'NM-L';
-  src: url('/font/NeueMachina-Light.otf') format('opentype');
-}
-
-@font-face {
-  font-family: 'NM-R';
-  src: url('/font/NeueMachina-Regular.otf') format('opentype');
-}
-
-
-
-
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@layer styles {
-  .flexCol {
-    @apply flex-col;
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 9%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 9%;
+    --primary: 24 95% 53%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 0 0% 96%;
+    --secondary-foreground: 0 0% 9%;
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 45%;
+    --accent: 0 0% 96%;
+    --accent-foreground: 0 0% 9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 90%;
+    --input: 0 0% 90%;
+    --ring: 24 95% 53%;
+    --radius: 0.625rem;
+    --sidebar: 0 0% 98% / 0.8;
+    --sidebar-foreground: 0 0% 45%;
+    --sidebar-accent: 0 0% 96%;
+    --sidebar-accent-foreground: 0 0% 9%;
+    --sidebar-border: 0 0% 90%;
+    --sidebar-ring: 24 95% 53%;
+  }
+
+  .dark {
+    --background: 0 0% 7%;
+    --foreground: 0 0% 95%;
+    --card: 0 0% 9%;
+    --card-foreground: 0 0% 95%;
+    --popover: 0 0% 9%;
+    --popover-foreground: 0 0% 95%;
+    --primary: 24 95% 53%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 0 0% 15%;
+    --secondary-foreground: 0 0% 95%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 55%;
+    --accent: 0 0% 15%;
+    --accent-foreground: 0 0% 95%;
+    --destructive: 0 62.8% 50.6%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 18%;
+    --input: 0 0% 18%;
+    --ring: 24 95% 53%;
+    --sidebar: 0 0% 5% / 0.8;
+    --sidebar-foreground: 0 0% 55%;
+    --sidebar-accent: 0 0% 13%;
+    --sidebar-accent-foreground: 0 0% 95%;
+    --sidebar-border: 0 0% 15%;
+    --sidebar-ring: 24 95% 53%;
   }
 }
 
-.main-font {
-  font-family: 'NM-R';
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
 }
 
-.myskill-title {
-  font-family: 'NM-UB';
-}
-
-.register-title {
-  font-family: 'NM-UB';
-}
-
-.myskill-desc{
-  font-family: 'NM-L';
-}
-
-.join{
-  font-family: 'NM-R';
-}
-
-.create{
-  font-family: 'NM-R';
-}
-
-.navbar{
-  font-family: 'NM-R';
-}
-
-.signin-form{
-  font-family: 'NM-R';
-}
-
-.register-form{
-  font-family: 'NM-R';
-}
-
-.signin-button{
-  font-family: 'NM-R';
-}
-
-.donthave{
-  font-family: 'NM-R';
-}
-
-.history-list{
-  font-family: 'NM-R';
-}
-
-.hisjocre{
-  font-family: 'NM-R';
-}
-
-
-.signin{
-  font-family: 'NM-UB';
-}
-
-
-/* .score-bar {
-  width: 100%;
-  background-color: #e2e8f0;
-  border-radius: 9999px;
-  overflow: hidden;
-}
-
-.score-bar-fill {
-  height: 1.5rem;
-  background-color: #48bb78;
-  border-radius: 9999px;
-  transition: width 0.5s ease-in-out;
-} */
-
-.chart-container {
-  width: 100%;
-  height: 500px;
+@layer utilities {
+  .glass {
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+  }
+  .glass-light {
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+  .dark .glass-light,
+  .glass-dark {
+    background: rgba(15, 15, 15, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .glass-card {
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    background: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+  .dark .glass-card {
+    background: rgba(20, 20, 20, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .text-gradient {
+    @apply bg-gradient-to-r from-orange-500 to-amber-500 bg-clip-text text-transparent;
+  }
 }
