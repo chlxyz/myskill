@@ -8,7 +8,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { motion, AnimatePresence } from "framer-motion";
-import { Loader2 } from "lucide-react";
+import { Loader2, Sparkles } from "lucide-react";
+import Link from "next/link";
 
 type Mode = "login" | "register";
 
@@ -89,12 +90,10 @@ export default function AuthPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background px-4 relative overflow-hidden">
-      {/* Background decorative elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-80 h-80 rounded-full bg-orange-500/10 blur-3xl" />
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 rounded-full bg-orange-500/5 blur-3xl" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-orange-500/[0.03] blur-3xl" />
-      </div>
+      {/* Background orbs */}
+      <div className="absolute top-1/4 left-1/4 w-96 h-96 portal-orb portal-orb-orange opacity-20 dark:opacity-50 animate-glow-pulse" />
+      <div className="absolute bottom-1/4 right-1/4 w-80 h-80 portal-orb portal-orb-amber opacity-15 dark:opacity-40 animate-glow-pulse" style={{ animationDelay: "2s" }} />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-orange-500/[0.02] dark:bg-orange-500/[0.03] blur-3xl" />
 
       <motion.div
         initial={{ opacity: 0, y: 30 }}
@@ -104,26 +103,26 @@ export default function AuthPage() {
       >
         {/* Logo */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center gap-2 mb-3">
-            <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-orange-500 to-amber-500 flex items-center justify-center shadow-lg shadow-orange-500/25">
+          <Link href="/" className="inline-flex items-center gap-2.5 mb-4">
+            <div className="h-11 w-11 rounded-xl bg-gradient-to-br from-orange-500 to-amber-500 flex items-center justify-center shadow-lg shadow-orange-500/25">
               <span className="text-white font-bold text-lg">M</span>
             </div>
-            <span className="text-xl font-bold">MYSkill</span>
-          </div>
+            <span className="text-xl font-bold tracking-tight">MYSkill</span>
+          </Link>
           <p className="text-sm text-muted-foreground">
             {mode === "login" ? "Welcome back" : "Get started in seconds"}
           </p>
         </div>
 
-        {/* Glassy card */}
-        <div className="glass-card rounded-2xl p-8 shadow-xl">
+        {/* Glass card */}
+        <div className="portal-card rounded-2xl p-8 shadow-xl dark:shadow-2xl dark:shadow-black/20">
           {/* Mode switcher */}
-          <div className="flex rounded-xl bg-muted/50 p-1 mb-6">
+          <div className="flex rounded-xl bg-black/[0.04] dark:bg-white/[0.04] border border-black/[0.08] dark:border-white/[0.06] p-1 mb-6">
             <button
               onClick={() => switchMode("login")}
               className={`flex-1 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 ${
                 mode === "login"
-                  ? "bg-background text-foreground shadow-sm"
+                  ? "bg-gradient-to-r from-orange-500/15 to-amber-500/15 text-orange-400 shadow-sm border border-orange-500/20"
                   : "text-muted-foreground hover:text-foreground"
               }`}
             >
@@ -133,7 +132,7 @@ export default function AuthPage() {
               onClick={() => switchMode("register")}
               className={`flex-1 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 ${
                 mode === "register"
-                  ? "bg-background text-foreground shadow-sm"
+                  ? "bg-gradient-to-r from-orange-500/15 to-amber-500/15 text-orange-400 shadow-sm border border-orange-500/20"
                   : "text-muted-foreground hover:text-foreground"
               }`}
             >
@@ -152,12 +151,12 @@ export default function AuthPage() {
                 className="mb-4 overflow-hidden"
               >
                 {error && (
-                  <div className="p-3 text-sm text-destructive bg-destructive/10 rounded-xl">
+                  <div className="p-3 text-sm text-destructive bg-destructive/10 rounded-xl border border-destructive/20">
                     {error}
                   </div>
                 )}
                 {success && (
-                  <div className="p-3 text-sm text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 rounded-xl">
+                  <div className="p-3 text-sm text-emerald-400 bg-emerald-500/10 rounded-xl border border-emerald-500/20">
                     {success}
                   </div>
                 )}
@@ -178,7 +177,7 @@ export default function AuthPage() {
                 className="space-y-4"
               >
                 <div className="space-y-2">
-                  <Label htmlFor="login-email">Email</Label>
+                  <Label htmlFor="login-email" className="text-sm text-muted-foreground">Email</Label>
                   <Input
                     id="login-email"
                     type="email"
@@ -186,11 +185,11 @@ export default function AuthPage() {
                     value={loginData.username}
                     onChange={(e) => setLoginData({ ...loginData, username: e.target.value })}
                     required
-                    className="h-11 rounded-xl"
+                    className="h-11 rounded-xl portal-input"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="login-password">Password</Label>
+                  <Label htmlFor="login-password" className="text-sm text-muted-foreground">Password</Label>
                   <Input
                     id="login-password"
                     type="password"
@@ -198,12 +197,12 @@ export default function AuthPage() {
                     value={loginData.password}
                     onChange={(e) => setLoginData({ ...loginData, password: e.target.value })}
                     required
-                    className="h-11 rounded-xl"
+                    className="h-11 rounded-xl portal-input"
                   />
                 </div>
                 <Button
                   type="submit"
-                  className="w-full h-11 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white shadow-lg shadow-orange-500/25 transition-all"
+                  className="w-full h-11 rounded-xl portal-btn-primary text-white font-medium border-0"
                   disabled={loading}
                 >
                   {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Sign In"}
@@ -220,7 +219,7 @@ export default function AuthPage() {
                 className="space-y-4"
               >
                 <div className="space-y-2">
-                  <Label htmlFor="reg-email">Email</Label>
+                  <Label htmlFor="reg-email" className="text-sm text-muted-foreground">Email</Label>
                   <Input
                     id="reg-email"
                     type="email"
@@ -228,11 +227,11 @@ export default function AuthPage() {
                     value={registerData.email}
                     onChange={(e) => setRegisterData({ ...registerData, email: e.target.value })}
                     required
-                    className="h-11 rounded-xl"
+                    className="h-11 rounded-xl portal-input"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="reg-username">Username</Label>
+                  <Label htmlFor="reg-username" className="text-sm text-muted-foreground">Username</Label>
                   <Input
                     id="reg-username"
                     type="text"
@@ -240,11 +239,11 @@ export default function AuthPage() {
                     value={registerData.username}
                     onChange={(e) => setRegisterData({ ...registerData, username: e.target.value })}
                     required
-                    className="h-11 rounded-xl"
+                    className="h-11 rounded-xl portal-input"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="reg-password">Password</Label>
+                  <Label htmlFor="reg-password" className="text-sm text-muted-foreground">Password</Label>
                   <Input
                     id="reg-password"
                     type="password"
@@ -252,12 +251,12 @@ export default function AuthPage() {
                     value={registerData.password}
                     onChange={(e) => setRegisterData({ ...registerData, password: e.target.value })}
                     required
-                    className="h-11 rounded-xl"
+                    className="h-11 rounded-xl portal-input"
                   />
                 </div>
                 <Button
                   type="submit"
-                  className="w-full h-11 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white shadow-lg shadow-orange-500/25 transition-all"
+                  className="w-full h-11 rounded-xl portal-btn-primary text-white font-medium border-0"
                   disabled={loading}
                 >
                   {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Create Account"}

@@ -5,7 +5,6 @@ import { useSearchParams } from "next/navigation";
 import axios from "axios";
 import { AppShell } from "@/components/organisms/AppShell";
 import { DashboardCharts } from "@/components/organisms/DashboardCharts";
-import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Users, BarChart3, Clock } from "lucide-react";
@@ -62,55 +61,35 @@ export default function DashboardPage() {
     return ((correct / questions.length) * 100).toFixed(1);
   };
 
+  const statCards = [
+    { label: "Respondents", value: data.quiz.results.length, icon: Users, color: "from-blue-500/20 to-cyan-500/20", iconColor: "text-blue-400" },
+    { label: "Questions", value: data.quiz.questions.length, icon: BarChart3, color: "from-orange-500/20 to-amber-500/20", iconColor: "text-orange-400" },
+    { label: "Duration", value: `${data.quiz.duration}m`, icon: Clock, color: "from-purple-500/20 to-pink-500/20", iconColor: "text-purple-400" },
+  ];
+
   return (
     <AppShell
       title="Dashboard"
       breadcrumbs={[{ label: "Home", href: "/" }, { label: "Dashboard" }]}
-      topBarExtra={<Badge variant="outline">Quiz ID: {quizId}</Badge>}
+      topBarExtra={<Badge variant="outline" className="border-black/[0.1] dark:border-white/[0.1] text-muted-foreground">Quiz ID: {quizId}</Badge>}
     >
       <div className="p-6 space-y-6">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
           {/* Stats row */}
           <div className="grid gap-4 md:grid-cols-3 mb-6">
-            <Card>
-              <CardContent className="pt-5 pb-5">
+            {statCards.map((stat) => (
+              <div key={stat.label} className="portal-card rounded-xl p-5">
                 <div className="flex items-center gap-3">
-                  <div className="h-9 w-9 rounded-lg bg-primary/10 flex items-center justify-center">
-                    <Users className="h-4 w-4 text-primary" />
+                  <div className={`h-10 w-10 rounded-lg bg-gradient-to-br ${stat.color} flex items-center justify-center`}>
+                    <stat.icon className={`h-5 w-5 ${stat.iconColor}`} />
                   </div>
                   <div>
-                    <p className="text-xl font-bold">{data.quiz.results.length}</p>
-                    <p className="text-xs text-muted-foreground">Respondents</p>
+                    <p className="text-xl font-bold">{stat.value}</p>
+                    <p className="text-xs text-muted-foreground">{stat.label}</p>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="pt-5 pb-5">
-                <div className="flex items-center gap-3">
-                  <div className="h-9 w-9 rounded-lg bg-primary/10 flex items-center justify-center">
-                    <BarChart3 className="h-4 w-4 text-primary" />
-                  </div>
-                  <div>
-                    <p className="text-xl font-bold">{data.quiz.questions.length}</p>
-                    <p className="text-xs text-muted-foreground">Questions</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="pt-5 pb-5">
-                <div className="flex items-center gap-3">
-                  <div className="h-9 w-9 rounded-lg bg-primary/10 flex items-center justify-center">
-                    <Clock className="h-4 w-4 text-primary" />
-                  </div>
-                  <div>
-                    <p className="text-xl font-bold">{data.quiz.duration}m</p>
-                    <p className="text-xs text-muted-foreground">Duration</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+              </div>
+            ))}
           </div>
 
           <div className="grid gap-6 lg:grid-cols-3">
@@ -118,29 +97,27 @@ export default function DashboardPage() {
               <DashboardCharts quizId={quizId!} />
             </div>
 
-            <Card>
-              <CardContent className="pt-5">
-                <h3 className="text-sm font-medium mb-3">Respondents</h3>
-                <ScrollArea className="h-[400px]">
-                  <div className="space-y-2">
-                    {data.quiz.results.map((result: any) => (
-                      <div key={result.id} className="p-2.5 rounded-lg bg-muted/50 space-y-1">
-                        <div className="flex items-center justify-between">
-                          <span className="font-medium text-xs">{result.user?.username || "N/A"}</span>
-                          <Badge variant="outline" className="text-[10px] px-1.5 py-0">
-                            {calculateScore(result.answers, data.quiz.questions)}%
-                          </Badge>
-                        </div>
-                        <p className="text-[11px] text-muted-foreground">{result.user?.email}</p>
-                        <p className="text-[11px]">
-                          Prediction: <span className="font-medium">{data.predictions[result.user?.id] || "N/A"}</span>
-                        </p>
+            <div className="portal-card rounded-xl p-5">
+              <h3 className="text-sm font-medium mb-3">Respondents</h3>
+              <ScrollArea className="h-[400px]">
+                <div className="space-y-2">
+                  {data.quiz.results.map((result: any) => (
+                    <div key={result.id} className="p-3 rounded-lg bg-black/[0.03] dark:bg-white/[0.03] border border-black/[0.06] dark:border-white/[0.04] space-y-1.5">
+                      <div className="flex items-center justify-between">
+                        <span className="font-medium text-xs">{result.user?.username || "N/A"}</span>
+                        <Badge variant="outline" className="text-[10px] px-1.5 py-0 border-black/[0.1] dark:border-white/[0.1]">
+                          {calculateScore(result.answers, data.quiz.questions)}%
+                        </Badge>
                       </div>
-                    ))}
-                  </div>
-                </ScrollArea>
-              </CardContent>
-            </Card>
+                      <p className="text-[11px] text-muted-foreground">{result.user?.email}</p>
+                      <p className="text-[11px]">
+                        Prediction: <span className="font-medium text-orange-400">{data.predictions[result.user?.id] || "N/A"}</span>
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </ScrollArea>
+            </div>
           </div>
         </motion.div>
       </div>

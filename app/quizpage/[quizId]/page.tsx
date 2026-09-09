@@ -9,7 +9,6 @@ import { ChoiceButton } from "@/components/molecules/ChoiceButton";
 import { ResultPanel } from "@/components/organisms/ResultPanel";
 import { QuizTimer } from "@/components/atoms/QuizTimer";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
@@ -110,16 +109,16 @@ export default function QuizPage() {
 
   if (durationTimer <= 0 && quiz) {
     return (
-      <div className="h-screen flex items-center justify-center bg-background">
-        <Card className="max-w-sm w-full">
-          <CardContent className="pt-6 text-center space-y-4">
-            <h2 className="text-2xl font-bold text-destructive">Time&apos;s Up!</h2>
-            <p className="text-muted-foreground">Your quiz has been submitted automatically.</p>
-            <Link href="/">
-              <Button>Return Home</Button>
-            </Link>
-          </CardContent>
-        </Card>
+      <div className="h-screen flex items-center justify-center bg-background relative overflow-hidden">
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 portal-orb portal-orb-orange opacity-20 dark:opacity-40" />
+        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 portal-orb portal-orb-amber opacity-15 dark:opacity-30" />
+        <div className="portal-card rounded-2xl p-8 text-center space-y-4 max-w-sm w-full relative z-10">
+          <h2 className="text-2xl font-bold text-destructive">Time&apos;s Up!</h2>
+          <p className="text-muted-foreground">Your quiz has been submitted automatically.</p>
+          <Link href="/">
+            <Button className="portal-btn-primary text-white border-0">Return Home</Button>
+          </Link>
+        </div>
       </div>
     );
   }
@@ -143,9 +142,9 @@ export default function QuizPage() {
   if (showResults) {
     return (
       <div className="h-screen flex flex-col bg-background">
-        <header className="border-b bg-background/95 backdrop-blur shrink-0">
+        <header className="border-b border-black/[0.08] dark:border-white/[0.06] glass-dark shrink-0">
           <div className="container mx-auto px-4 h-14 flex items-center">
-            <Link href="/" className="text-sm font-semibold">MYSkill</Link>
+            <Link href="/" className="text-sm font-semibold tracking-tight">MYSkill</Link>
           </div>
         </header>
         <main className="flex-1 overflow-y-auto container mx-auto px-4 py-8 max-w-3xl">
@@ -157,7 +156,7 @@ export default function QuizPage() {
           />
           <div className="mt-6 text-center">
             <Link href="/">
-              <Button>Return Home</Button>
+              <Button className="portal-btn-primary text-white border-0">Return Home</Button>
             </Link>
           </div>
         </main>
@@ -170,12 +169,12 @@ export default function QuizPage() {
 
   return (
     <div className="h-screen flex flex-col bg-background">
-      {/* Minimal top bar */}
-      <header className="border-b bg-background/95 backdrop-blur shrink-0 z-40">
+      {/* Header */}
+      <header className="border-b border-black/[0.08] dark:border-white/[0.06] glass-dark shrink-0 z-40">
         <div className="container mx-auto px-4 h-12 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Link href="/" className="text-sm font-semibold">MYSkill</Link>
-            <span className="text-muted-foreground">|</span>
+            <Link href="/" className="text-sm font-semibold tracking-tight">MYSkill</Link>
+            <span className="text-black/10 dark:text-white/10">|</span>
             <h1 className="font-medium text-sm truncate max-w-[200px]">{quiz.title}</h1>
             <span className="text-xs text-muted-foreground">
               {currentQuestionIndex + 1} / {quiz.questions.length}
@@ -187,7 +186,7 @@ export default function QuizPage() {
               variant="ghost"
               size="sm"
               onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="h-8 px-2"
+              className="h-8 px-2 hover:bg-black/[0.06] dark:hover:bg-white/[0.06]"
             >
               {sidebarOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
             </Button>
@@ -223,17 +222,17 @@ export default function QuizPage() {
                 </div>
 
                 <div className="flex items-center justify-between pt-4">
-                  <Button variant="outline" onClick={handlePrevious} disabled={currentQuestionIndex === 0}>
+                  <Button variant="outline" onClick={handlePrevious} disabled={currentQuestionIndex === 0} className="border-black/[0.1] dark:border-white/[0.1] hover:bg-black/[0.06] dark:hover:bg-white/[0.06]">
                     <ChevronLeft className="h-4 w-4 mr-1" />
                     Previous
                   </Button>
                   {currentQuestionIndex === quiz.questions.length - 1 ? (
-                    <Button onClick={() => setShowFinishDialog(true)}>
+                    <Button onClick={() => setShowFinishDialog(true)} className="portal-btn-primary text-white border-0">
                       <Flag className="h-4 w-4 mr-1" />
                       Finish
                     </Button>
                   ) : (
-                    <Button onClick={handleNext}>
+                    <Button onClick={handleNext} className="portal-btn-primary text-white border-0">
                       Next
                       <ChevronRight className="h-4 w-4 ml-1" />
                     </Button>
@@ -246,7 +245,7 @@ export default function QuizPage() {
 
         {/* Question navigator sidebar */}
         <aside
-          className={`${sidebarOpen ? "w-64" : "w-0"} border-l bg-muted/30 transition-all duration-300 overflow-hidden shrink-0 hidden md:block`}
+          className={`${sidebarOpen ? "w-64" : "w-0"} border-l border-black/[0.08] dark:border-white/[0.06] bg-black/[0.02] dark:bg-white/[0.02] transition-all duration-300 overflow-hidden shrink-0 hidden md:block`}
         >
           <div className="p-4">
             <QuestionNavigator
@@ -260,7 +259,7 @@ export default function QuizPage() {
       </div>
 
       <Dialog open={showFinishDialog} onOpenChange={setShowFinishDialog}>
-        <DialogContent>
+        <DialogContent className="glass-dark border-black/[0.08] dark:border-white/[0.08]">
           <DialogHeader>
             <DialogTitle>Finish Quiz?</DialogTitle>
             <DialogDescription>
@@ -269,8 +268,8 @@ export default function QuizPage() {
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setShowFinishDialog(false)}>Cancel</Button>
-            <Button onClick={handleSubmitQuiz}>Submit Quiz</Button>
+            <Button variant="outline" onClick={() => setShowFinishDialog(false)} className="border-black/[0.1] dark:border-white/[0.1] hover:bg-black/[0.06] dark:hover:bg-white/[0.06]">Cancel</Button>
+            <Button onClick={handleSubmitQuiz} className="portal-btn-primary text-white border-0">Submit Quiz</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

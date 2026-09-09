@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Plus, Trash2, GripVertical } from "lucide-react";
 
@@ -135,114 +134,114 @@ export function ExamForm() {
     <form onSubmit={handleSubmit} className="space-y-6">
       <div className="grid gap-4 md:grid-cols-2">
         <div className="space-y-2">
-          <Label htmlFor="title">Title</Label>
-          <Input id="title" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Exam title" required />
+          <Label htmlFor="title" className="text-sm text-muted-foreground">Title</Label>
+          <Input id="title" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Exam title" required className="h-11 rounded-xl portal-input" />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="duration">Duration (minutes)</Label>
-          <Input id="duration" type="number" value={duration} onChange={(e) => setDuration(e.target.value)} placeholder="30" required />
+          <Label htmlFor="duration" className="text-sm text-muted-foreground">Duration (minutes)</Label>
+          <Input id="duration" type="number" value={duration} onChange={(e) => setDuration(e.target.value)} placeholder="30" required className="h-11 rounded-xl portal-input" />
         </div>
       </div>
       <div className="space-y-2">
-        <Label htmlFor="description">Description</Label>
-        <Textarea id="description" value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Exam description (optional)" />
+        <Label htmlFor="description" className="text-sm text-muted-foreground">Description</Label>
+        <Textarea id="description" value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Exam description (optional)" className="rounded-xl portal-input min-h-[80px]" />
       </div>
 
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <h3 className="text-lg font-semibold">Questions</h3>
-          <Button type="button" variant="outline" size="sm" onClick={addQuestion}>
+          <h3 className="text-lg font-semibold tracking-tight">Questions</h3>
+          <Button type="button" variant="outline" size="sm" onClick={addQuestion} className="border-black/[0.1] dark:border-white/[0.1] hover:bg-black/[0.06] dark:hover:bg-black/[0.06] dark:hover:bg-white/[0.06]">
             <Plus className="h-4 w-4 mr-1" /> Add Question
           </Button>
         </div>
 
         {questions.map((question, qIndex) => (
-          <Card key={qIndex}>
-            <CardContent className="pt-6 space-y-4">
-              <div className="flex items-start justify-between gap-4">
-                <div className="flex-1 space-y-2">
-                  <div className="flex items-center gap-2">
-                    <GripVertical className="h-4 w-4 text-muted-foreground" />
-                    <Label className="text-sm font-medium">Question {qIndex + 1}</Label>
-                    <Badge variant={question.difficulty === "easy" ? "success" : question.difficulty === "hard" ? "destructive" : "warning"}>
-                      {question.difficulty}
-                    </Badge>
-                  </div>
-                  <Input
-                    value={question.content}
-                    onChange={(e) => updateQuestion(qIndex, "content", e.target.value)}
-                    placeholder="Enter question"
-                    required
-                  />
+          <div key={qIndex} className="portal-card rounded-xl p-6 space-y-4">
+            <div className="flex items-start justify-between gap-4">
+              <div className="flex-1 space-y-2">
+                <div className="flex items-center gap-2">
+                  <GripVertical className="h-4 w-4 text-muted-foreground" />
+                  <Label className="text-sm font-medium">Question {qIndex + 1}</Label>
+                  <Badge variant={question.difficulty === "easy" ? "success" : question.difficulty === "hard" ? "destructive" : "warning"}>
+                    {question.difficulty}
+                  </Badge>
                 </div>
-                <Button type="button" variant="ghost" size="icon" className="text-destructive hover:text-destructive" onClick={() => removeQuestion(qIndex)}>
-                  <Trash2 className="h-4 w-4" />
+                <Input
+                  value={question.content}
+                  onChange={(e) => updateQuestion(qIndex, "content", e.target.value)}
+                  placeholder="Enter question"
+                  required
+                  className="rounded-xl portal-input"
+                />
+              </div>
+              <Button type="button" variant="ghost" size="icon" className="text-destructive hover:text-destructive hover:bg-destructive/10" onClick={() => removeQuestion(qIndex)}>
+                <Trash2 className="h-4 w-4" />
+              </Button>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label className="text-xs text-muted-foreground">Score</Label>
+                <Input
+                  type="number"
+                  value={question.score}
+                  onChange={(e) => updateQuestion(qIndex, "score", parseInt(e.target.value, 10) || 0)}
+                  required
+                  className="rounded-xl portal-input"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label className="text-xs text-muted-foreground">Difficulty</Label>
+                <select
+                  value={question.difficulty}
+                  onChange={(e) => updateQuestion(qIndex, "difficulty", e.target.value)}
+                  className="flex h-9 w-full rounded-xl border border-black/[0.1] dark:border-white/[0.08] bg-black/[0.03] dark:bg-white/[0.04] px-3 py-1 text-sm shadow-sm focus:border-orange-500/40 focus:ring-1 focus:ring-orange-500/10"
+                >
+                  <option value="easy">Easy</option>
+                  <option value="medium">Medium</option>
+                  <option value="hard">Hard</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <Label className="text-xs text-muted-foreground">Choices</Label>
+                <Button type="button" variant="ghost" size="sm" onClick={() => addChoice(qIndex)} className="hover:bg-black/[0.06] dark:hover:bg-white/[0.06]">
+                  <Plus className="h-3 w-3 mr-1" /> Add Choice
                 </Button>
               </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label className="text-xs">Score</Label>
+              {question.choices.map((choice, cIndex) => (
+                <div key={cIndex} className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    checked={choice.isCorrect}
+                    onChange={(e) => updateChoice(qIndex, cIndex, "isCorrect", e.target.checked)}
+                    className="h-4 w-4 rounded border-black/20 dark:border-white/20 bg-black/[0.04] dark:bg-white/[0.04] accent-orange-500"
+                  />
                   <Input
-                    type="number"
-                    value={question.score}
-                    onChange={(e) => updateQuestion(qIndex, "score", parseInt(e.target.value, 10) || 0)}
+                    value={choice.content}
+                    onChange={(e) => updateChoice(qIndex, cIndex, "content", e.target.value)}
+                    placeholder={`Choice ${String.fromCharCode(65 + cIndex)}`}
+                    className="flex-1 rounded-xl portal-input"
                     required
                   />
+                  {question.choices.length > 1 && (
+                    <Button type="button" variant="ghost" size="icon" className="h-8 w-8 text-destructive hover:text-destructive hover:bg-destructive/10" onClick={() => removeChoice(qIndex, cIndex)}>
+                      <Trash2 className="h-3 w-3" />
+                    </Button>
+                  )}
                 </div>
-                <div className="space-y-2">
-                  <Label className="text-xs">Difficulty</Label>
-                  <select
-                    value={question.difficulty}
-                    onChange={(e) => updateQuestion(qIndex, "difficulty", e.target.value)}
-                    className="flex h-9 w-full rounded-lg border border-input bg-transparent px-3 py-1 text-sm shadow-sm"
-                  >
-                    <option value="easy">Easy</option>
-                    <option value="medium">Medium</option>
-                    <option value="hard">Hard</option>
-                  </select>
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <Label className="text-xs">Choices</Label>
-                  <Button type="button" variant="ghost" size="sm" onClick={() => addChoice(qIndex)}>
-                    <Plus className="h-3 w-3 mr-1" /> Add Choice
-                  </Button>
-                </div>
-                {question.choices.map((choice, cIndex) => (
-                  <div key={cIndex} className="flex items-center gap-2">
-                    <input
-                      type="checkbox"
-                      checked={choice.isCorrect}
-                      onChange={(e) => updateChoice(qIndex, cIndex, "isCorrect", e.target.checked)}
-                      className="h-4 w-4 rounded border-gray-300"
-                    />
-                    <Input
-                      value={choice.content}
-                      onChange={(e) => updateChoice(qIndex, cIndex, "content", e.target.value)}
-                      placeholder={`Choice ${String.fromCharCode(65 + cIndex)}`}
-                      className="flex-1"
-                      required
-                    />
-                    {question.choices.length > 1 && (
-                      <Button type="button" variant="ghost" size="icon" className="h-8 w-8 text-destructive" onClick={() => removeChoice(qIndex, cIndex)}>
-                        <Trash2 className="h-3 w-3" />
-                      </Button>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
+              ))}
+            </div>
+          </div>
         ))}
       </div>
 
       {error && <p className="text-sm text-destructive">{error}</p>}
 
       <div className="flex justify-end">
-        <Button type="submit" disabled={loading}>
+        <Button type="submit" disabled={loading} className="portal-btn-primary text-white border-0 px-6">
           {loading ? "Saving..." : quizId ? "Update Exam" : "Create Exam"}
         </Button>
       </div>
